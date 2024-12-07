@@ -9,7 +9,7 @@ def input_array(prompt):
 
 
 def find_repeated_in_b(array_a, array_b):
-    "Находит повторяющиеся элементы массива B, которые в A встречаются один раз."
+    "Находит повторяющиеся элементы массива B, которые в A встречаются только один раз."
     count_in_a = {x: array_a.count(x) for x in array_a}
     result = []
     for x in set(array_b):
@@ -17,6 +17,11 @@ def find_repeated_in_b(array_a, array_b):
             result.append(x)
     return result
 
+def find_unique_elements(array_a, array_b):
+    "Находит элементы, которые есть только в массиве A или только в массиве B."
+    only_in_a = [x for x in array_a if x not in array_b]
+    only_in_b = [x for x in array_b if x not in array_a]
+    return only_in_a, only_in_b
 
 def main():
     print("Анализ массивов A и B.")
@@ -43,14 +48,20 @@ def main():
             if not array_a or not array_b:
                 print("Ошибка: сначала введите массивы A и B.")
             else:
-                # Повторяющиеся элементы массива B, которые в массиве A только один раз
+                # Повторяющиеся элементы массива B, которые в A только один раз
                 repeated_in_b = find_repeated_in_b(array_a, array_b)
-                print(f"Элементы массива B, которые повторяются, но в A только один раз: {repeated_in_b}" if repeated_in_b else "Таких элементов нет.")
+                print(f"Элементы массива B, которые повторяются, но в A ровно один раз: {repeated_in_b}" if repeated_in_b else "Таких элементов нет.")
+
+                # Элементы, которые есть только в A или только в B
+                only_in_a, only_in_b = find_unique_elements(array_a, array_b)
+                print(f"Элементы, которые есть только в массиве A: {only_in_a}" if only_in_a else "Таких элементов в A нет.")
+                print(f"Элементы, которые есть только в массиве B: {only_in_b}" if only_in_b else "Таких элементов в B нет.")
         elif choice == '4':
             print("Выход из программы.")
             break
         else:
             print("Ошибка: выберите пункт меню от 1 до 4.")
+
 
 if __name__ == "__main__":
     main()
