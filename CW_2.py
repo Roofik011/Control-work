@@ -1,7 +1,10 @@
+from datetime import datetime
+
 def input_array(prompt):
     while True:
         user_input = input(prompt).strip()
         try:
+            # Преобразуем строку в список чисел
             array = list(map(int, user_input.split(',')))
             return array
         except ValueError:
@@ -31,8 +34,41 @@ def find_a_repeated_in_b(array_a, array_b):
     return repeated_in_b
 
 
+def log_analysis(array_a, array_b, repeated_in_b, only_in_a, only_in_b, repeated_a_in_b, log_format="standard"):
+    if log_format == "standard":
+        print("\n--- Анализ массивов ---")
+        print(f"Массив A: {array_a}")
+        print(f"Массив B: {array_b}")
+        print("\nЭлементы массива B, которые повторяются, но в A только один раз:")
+        for item in repeated_in_b:
+            print(f"- {item}")
+        print("\nЭлементы, которые есть только в массиве A:")
+        for item in only_in_a:
+            print(f"- {item}")
+        print("\nЭлементы, которые есть только в массиве B:")
+        for item in only_in_b:
+            print(f"- {item}")
+        print("\nЭлементы массива A, повторяющиеся в массиве B несколько раз:")
+        for item in repeated_a_in_b:
+            print(f"- {item}")
+    elif log_format == "oneline":
+        print(f"Анализ массивов: A={array_a}, B={array_b} | "
+              f"Повторяются в B, но только в A: {repeated_in_b} | "
+              f"Только в A: {only_in_a} | "
+              f"Только в B: {only_in_b} | "
+              f"A в B несколько раз: {repeated_a_in_b}")
+    elif log_format == "oneline_with_date":
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f"[{timestamp}] Анализ массивов: A={array_a}, B={array_b} | "
+              f"Повторяются в B, но только в A: {repeated_in_b} | "
+              f"Только в A: {only_in_a} | "
+              f"Только в B: {only_in_b} | "
+              f"A в B несколько раз: {repeated_a_in_b}")
+
+
 def main():
     print("Анализ массивов A и B.")
+    log_format = input("Выберите формат логов (standard, oneline, oneline_with_date): ").strip()
 
     array_a = []
     array_b = []
@@ -41,7 +77,7 @@ def main():
         print("\nМеню:")
         print("1. Ввести массив A")
         print("2. Ввести массив B")
-        print("3. Проанализировать массивы")
+        print("3. Выполнить анализ массивов")
         print("4. Выход")
 
         choice = input("Выберите пункт меню (1-4): ").strip()
@@ -58,16 +94,15 @@ def main():
             else:
                 # Повторяющиеся элементы массива B, которые в A только один раз
                 repeated_in_b = find_repeated_in_b(array_a, array_b)
-                print(f"Элементы массива B, которые повторяются, но в A только один раз: {repeated_in_b}" if repeated_in_b else "Таких элементов нет.")
 
                 # Элементы, которые есть только в A или только в B
                 only_in_a, only_in_b = find_unique_elements(array_a, array_b)
-                print(f"Элементы, которые есть только в массиве A: {only_in_a}" if only_in_a else "Таких элементов в A нет.")
-                print(f"Элементы, которые есть только в массиве B: {only_in_b}" if only_in_b else "Таких элементов в B нет.")
 
                 # Элементы массива A, которые повторяются в массиве B несколько раз
                 repeated_a_in_b = find_a_repeated_in_b(array_a, array_b)
-                print(f"Элементы массива A, повторяющиеся в массиве B несколько раз: {repeated_a_in_b}" if repeated_a_in_b else "Таких элементов нет.")
+
+                # Вывод логов
+                log_analysis(array_a, array_b, repeated_in_b, only_in_a, only_in_b, repeated_a_in_b, log_format)
         elif choice == '4':
             print("Выход из программы.")
             break
